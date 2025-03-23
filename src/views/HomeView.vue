@@ -19,7 +19,9 @@ import Button from 'primevue/button';
 import Message from 'primevue/message';
 import { onMounted, ref } from 'vue';
 import { useTokenStore } from '@/stores/token.js';
-import axios from 'axios'
+import axios from 'axios';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import ValueExchanged from '@/components/valueExchanged.vue';
 
 const token = useTokenStore()
@@ -31,8 +33,19 @@ const inputValues = ref({
 })
 const exchangedValue = ref('')
 
+const rules = {
+  inputValues: {
+    from: { required },
+    to: { required },
+    amount: { required }
+  }
+}
+
+const v$ = useVuelidate(rules, {inputValues})
+
 onMounted(async () => {
-  try {
+  if(token.token) {
+    try {
     const response = await axios.get('https://api.currencybeacon.com/v1/currencies', {
       headers: {
         Authorization: `Bearer ${token.token}`
@@ -42,9 +55,14 @@ onMounted(async () => {
   } catch(error) {
     console.error(error)
   }
+  }
 })
 
 const exchange = async () => {
+  v$.value.$touch()
+  if (v$.value.$invalid) {
+    return
+  }
   try {
     const response = await axios.get('https://api.currencybeacon.com/v1/convert', {
       headers: {
