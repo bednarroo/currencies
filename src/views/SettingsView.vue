@@ -1,15 +1,32 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="options">
+    <div class="option">
+      <label for="token">Token</label>
+      <InputText id="token" v-model="token.token" aria-describedby="token" />
+    </div>
   </div>
 </template>
 
+
+<script setup>
+import { useTokenStore } from '@/stores/token.js';
+import InputText from 'primevue/inputtext';
+
+const token = useTokenStore()
+
+
+</script>
+
 <style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 50vh;
-    display: flex;
-    align-items: center;
-  }
+.options{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-end;
+}
+.option{
+  display: flex;
+  flex-direction: column;
 }
 </style>
+

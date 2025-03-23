@@ -5,9 +5,9 @@
                 <img src="../assets/icons/currency.png" height="30px"/>
             </template>
             <template #item="{ item, props }">
-                <a v-ripple class="flex items-center" v-bind="props.action">
+                <RouterLink v-ripple class="flex items-center" v-bind="props.action">
                     <span>{{ item.label }}</span>
-                </a>
+                </RouterLink>
             </template>
         </Menubar>
     </div>
@@ -38,7 +38,6 @@ const items = ref([
 </script>
 
 <style scoped>
-@import 'primeicons/primeicons.css';
 .card{
     width: 100%;
 }
